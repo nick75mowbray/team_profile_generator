@@ -13,8 +13,7 @@ const Employee = require("./lib/Employee");
 
 // declare global variables
 let teamName = "";
-let internsArr = [];
-let engineersArr = [];
+let EmployeesArr = [];
 // for setting a default id
 let currentID = 0;
 
@@ -27,14 +26,17 @@ function employeeTypeQuestion(){
         type: "list",
         choices: ["intern", "engineer",new inquirer.Separator(), "done"]})
 .then(answers => {
-    // if intern selected run intern questions
+    // if 'intern' selected run intern questions
     if (answers.employee === "intern"){
         internQuestion();
-    // if engineer selected run engineer questions
+    // if 'engineer' selected run engineer questions
     } else if (answers.employee === "engineer"){
         engineerQuestion();
+    } 
+    // if 'done' selected program will stop
+    else if (answers.employee === "done"){
+        renderHtml();
     }
-    // if done selected program will stop
 }).catch(error => {
     console.error(error);
 })
@@ -65,6 +67,8 @@ function ManagerQuestion(){
 .then( answers => {
     // create new manager object
     const manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+    // add manager to array
+    EmployeesArr.push(manager);
     // save team name
     teamName = answers.team;
     // set the current id (if the user enters a custom id)
@@ -97,7 +101,7 @@ function internQuestion(){
     // create new intern object
     const intern = new Intern(answers.name, answers.id, answers.email, answers.school)
     // add intern to array
-    internsArr.push(intern);
+    EmployeesArr.push(intern);
     // set the current id (if the user enters a custom id)
     currentID = answers.id;
     // run prompt to generate another profile 
@@ -131,7 +135,7 @@ function engineerQuestion(){
     // create new engineer object
     const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github)
     // add engineer to an array
-    engineersArr.push(engineer);
+    EmployeesArr.push(engineer);
     // set the current id (if the user enters a custom id)
     currentID = answers.id;
     // run prompt to generate another profile 
@@ -143,6 +147,17 @@ function engineerQuestion(){
  
 // call the first lot of questions
 ManagerQuestion();
+
+function renderHtml(){
+    // call render function
+    const myhtml = render(EmployeesArr);
+    console.log(myhtml);
+    fs.writeFile(outputPath, myhtml, "utf-8", function(err){
+        if (err) throw err;
+        console.log("success! team.html has been created");
+    });
+}
+
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // After the user has input all employees desired, call the `render` function (required
