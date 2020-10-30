@@ -24,7 +24,7 @@ function employeeTypeQuestion(){
         name: "employee",
         message: "Employee type:",
         type: "list",
-        choices: ["intern", "engineer",new inquirer.Separator(), "done"]})
+        choices: ["engineer", "intern", new inquirer.Separator(), "done"]})
 .then(answers => {
     // if 'intern' selected run intern questions
     if (answers.employee === "intern"){
@@ -46,6 +46,7 @@ function employeeTypeQuestion(){
 function ManagerQuestion(){
     // increase default id by 1
     currentID++;
+    console.log("\n");
     inquirer.prompt([{
         name: "team",
         message: "Team name:",
@@ -150,8 +151,7 @@ ManagerQuestion();
 
 function renderHtml(){
     // call render function
-    const myhtml = render(EmployeesArr);
-    console.log(myhtml);
+    const myhtml = render(EmployeesArr, teamName);
     fs.writeFile(outputPath, myhtml, "utf-8", function(err){
         if (err) throw err;
         console.log("success! team.html has been created");
