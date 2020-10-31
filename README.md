@@ -2,6 +2,8 @@
 ![screen shot of desktop](/assets/desktop.jpg)
 ## Description
 This application takes input from the user through the command line using inquirer npm and creates a dynamically generated and styled html file based on the users input.
+![demo](/assets/team_profile_demo.gif)
+
 ## Table of Contents
 * [Description](#Description)
 * [Installation](#Installation)
